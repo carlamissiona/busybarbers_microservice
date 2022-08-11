@@ -1,0 +1,13 @@
+CREATE TABLE bbr_articles (
+	article_id serial PRIMARY KEY,
+	title VARCHAR ( 255 ) UNIQUE NOT NULL,
+   link VARCHAR ( 255 ) UNIQUE NOT NULL,
+	content TEXT NOT NULL,
+  author VARCHAR ( 255 ) UNIQUE NOT NULL,
+	changed_on TIMESTAMP NOT NULL,
+	created_on TIMESTAMP NOT NULL
+);
+
+
+3250GolangApps  
+postgres://postgres:3250GolangApps@db.wzuvwwufkufkfjpkndzt.supabase.co:6543/postgres
