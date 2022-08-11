@@ -8,9 +8,9 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-
 	m3o "go.m3o.com"
 	"go.m3o.com/email"
+	"os/exec"
 )
 
 var db *sql.DB
@@ -33,6 +33,11 @@ type Maps struct {
 	Link        string      `json:"map_link"`
 	Changed_on  interface{} `json:"map_change_date"`
 }
+func RenderPaid(c *fiber.Ctx) error {
+
+	 retutn c.JSON("An error occured")
+
+ }
 
 func RenderHome(c *fiber.Ctx) error {
 
@@ -86,8 +91,8 @@ func RenderServices(c *fiber.Ctx) error {
 	curl := exec.Command("curl", "-k", "-s", "-v", urlmcsv) // this line is modified
 	out, err := curl.Output()
 	if err != nil {
-		fmt.Println("erorr", err)
-		return
+		log.Println("erorr", err)
+
 	}
 	log.Println(string(out))
 
