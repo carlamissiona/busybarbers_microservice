@@ -75,50 +75,20 @@
         <div class="container">
           <div id="main_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
+                 {{ range $key, $val := .Articles }}
               <div class="carousel-item active">
                 <div class="row">
-                      {{ range $key, $val := .Articles }}
+                     
                             <div class="col-md-6">
                               <div class="alex_bg">
-                                <h3 class="alex_text">{{  .Id }} {{ .Title }}</h3>
-                                <p class="reader_text">{{  .Content }}</p>
+                                <h3 class="alex_text"> {{ .Title }}</h3>
+                                <p class="reader_text"  style=" overflow: hidden;display: -webkit-box;-webkit-line-clamp: 5;-webkit-box-orient: vertical;">{{  .Content }} </p>
                               </div>
                             </div>                       
-                      {{ end }} 
+                   
                 </div>
               </div>
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="alex_bg">
-                      <h3 class="alex_text">Alex jorze</h3>
-                      <p class="reader_text">t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="alex_bg">
-                      <h3 class="alex_text">Stip mark</h3>
-                      <p class="reader_text">t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="alex_bg">
-                      <h3 class="alex_text">Alex jorze</h3>
-                      <p class="reader_text">t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="alex_bg">
-                      <h3 class="alex_text">Stip mark</h3>
-                      <p class="reader_text">t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                   {{ end }} 
             </div>
             <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
               <i class="fa fa-long-arrow-left"></i>
