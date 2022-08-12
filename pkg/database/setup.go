@@ -11,36 +11,24 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-)
-
-func OpeDatabase() *sql.DB {
-
-	err := godotenv.Load(".env")
-
+) 
+func OpenDatabase() *sql.DB {
+    err := godotenv.Load(".env")
+	log.Println("Workign loading .env file")
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	  }
-	
-	
-    urldb := os.Getenv("POSTGRES_URL")
-	Database, err := sql.Open("postgres", urldb)
-	if err != nil {
-		log.Println("Error after OS env file")
-		panic(err)
-	}
-	return Database
-}
-func SetupDatabase() *sql.DB {
-	var err error
-    urldb := os.Getenv("POSTGRES_URL")
+	 
+    urldb := os.Getenv("POSTGRES_URL"); log.Println(urldb);
 	if err != nil {
 		log.Fatalf("failed reading env file: %v", err)
 	}
     
-	log.Println("os env file")
-	Database, err := sql.Open("postgres", urldb)
+	log.Println("os env file"); log.Print("POSTGRES_URL");
+	Database, err := sql.Open("postgres", urldb); log.Println(urldb);
 	if err != nil {
+		log.Print("POSTGRES_URL");
 		log.Println("Error after OS env file")
 		panic(err)
 	}
@@ -67,4 +55,4 @@ func SetupDatabase() *sql.DB {
 	log.Println(Database)
 	log.Println(rows)
 	return Database
-}
+} 

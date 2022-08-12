@@ -4,20 +4,24 @@ import (
 	"carlamissiona/golang-barbers/pkg/database"
 	"database/sql"
 	_ "database/sql"
-	"log"
-	"os"
-
+	_ "encoding/json"
 	"github.com/gofiber/fiber/v2"
 	m3o "go.m3o.com"
 	"go.m3o.com/email"
-	"os/exec"
+	"log"
+	"net/http"
+	"os"
+	// "os/exec"
+	"github.com/Jeffail/gabs"
+	"io/ioutil"
+	_ "reflect"
 )
 
 var db *sql.DB
 
 func Initcontroller() {
 	log.Println("InitInitCon!")
-	db = database.SetupDatabase()
+	db = database.OpenDatabase()
 }
 
 type Article struct {
@@ -33,16 +37,17 @@ type Maps struct {
 	Link        string      `json:"map_link"`
 	Changed_on  interface{} `json:"map_change_date"`
 }
+
 func RenderPaid(c *fiber.Ctx) error {
 
-	 retutn c.JSON("An error occured")
+	return c.JSON("An error occured")
 
- }
+}
 
 func RenderHome(c *fiber.Ctx) error {
 
 	log.Println("API ARTICLES1")
-
+	db = database.OpenDatabase()
 	rows, err := db.Query("Select title, content, link, changed_on from public.bbr_articles")
 
 	if err != nil {
@@ -83,22 +88,57 @@ func RenderHome(c *fiber.Ctx) error {
 	}, "layouts/htm")
 }
 
-func RenderServices(c *fiber.Ctx) error {
-
-	urlmcsv := os.Getenv("SERVICES_URL")
+func RenderAbout(c *fiber.Ctx) error {
+	urlmcsv := os.Getenv("SVC_MAPS_URL")
 	log.Println(urlmcsv)
-
-	curl := exec.Command("curl", "-k", "-s", "-v", urlmcsv) // this line is modified
-	out, err := curl.Output()
+	response, err := http.Get(urlmcsv)
 	if err != nil {
-		log.Println("erorr", err)
+		log.Printf("No response from request %v", err)
 
 	}
-	log.Println(string(out))
+	defer response.Body.Close()
+	 
+	body, err := ioutil.ReadAll(resp.Body) // response body is []byte
+	if err != nil {
+		fmt.Println("No response from request")
+		fmt.Println(err)
+
+		c.Redirect(http.StatusFound, location.RequestURI())
+
+	}
+	var objParsed interface{}
+	err = json.Unmarshal(body, &objParsed)
+	var result map[string]interface{}
+
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		fmt.Println("Unmarshal Error from request")
+		fmt.Println(err)
+	}
+
+	return c.Render("about-page", fiber.Map{
+		"Title":    "About",
+		"Articles": "articles",
+	}, "layouts/htm")
+
+}
+
+func RenderServices(c *fiber.Ctx) error {
+
+	// urlmcsv := os.Getenv("SERVICES_URL")
+	// log.Println(urlmcsv)
+
+	// curl := exec.Command("curl", "-k", "-s", "-v", urlmcsv) // this line is modified
+	// out, err := curl.Output()
+	// if err != nil {
+	// 	log.Println("erorr", err)
+
+	// }
+	// log.Println(string(out))
 
 	return c.Render("services", fiber.Map{
 		"Title":    "Services ",
-		"Articles": string(out),
+		"Articles": "articles",
 	}, "layouts/htm")
 }
 
@@ -109,12 +149,12 @@ func RenderPayment(c *fiber.Ctx) error {
 	}, "layouts/htm")
 }
 
-func RenderAbout(c *fiber.Ctx) error {
-	log.Println("Higshsss!")
-	return c.Render("index", fiber.Map{
-		"FiberTitle": "Hello From Fiber Html Engine",
-	}, "layouts/htm")
-}
+// func RenderAbout(c *fiber.Ctx) error {
+// 	log.Println("Higshsss!")
+// 	return c.Render("index", fiber.Map{
+// 		"FiberTitle": "Hello From Fiber Html Engine",
+// 	}, "layouts/htm")
+// }
 
 func RenderContact(c *fiber.Ctx) error {
 	log.Println("High")

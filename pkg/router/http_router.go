@@ -21,6 +21,8 @@ func (h HttpRouter) InstallRouter(app *fiber.App) {
 
 	web := app.Group("", cors.New(), csrf.New())
 	web.Get("/", controllers.RenderHome)
+	web.Get("/services", controllers.RenderServices)
+	web.Get("/about", controllers.RenderAbout)
 	web.Get("/transaction", controllers.RenderPayment)
 	web.Get("/transaction-paid", controllers.RenderPaid)
 	web.Get("/contact", controllers.RenderContact)

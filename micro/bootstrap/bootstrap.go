@@ -25,7 +25,7 @@ func NewApplication(modeparam string) *fiber.App {
         
         app := fiber.New(fiber.Config{Views: engine})
         // app := fiber.New()
-        app.Use(recover.New()) 
+        app.Use(recover.New())  
         app.Use(logger.New())
         log.Println("API ARTICLES")  
         log.Println( app.Use(etag.New()) )
