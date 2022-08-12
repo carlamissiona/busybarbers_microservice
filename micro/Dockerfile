@@ -16,7 +16,7 @@ RUN go build -o /go/src/main
 
 RUN export PATH="/go/src/main:$PATH"
 
-EXPOSE 5000
+EXPOSE 8000
 
-ENTRYPOINT ["/go/src/main","monolith"]
+ENTRYPOINT ["/go/src/main","api"]
  

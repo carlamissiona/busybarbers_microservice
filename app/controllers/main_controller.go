@@ -4,15 +4,17 @@ import (
 	"carlamissiona/golang-barbers/pkg/database"
 	"database/sql"
 	_ "database/sql"
-	_ "encoding/json"
+	 "encoding/json"
 	"github.com/gofiber/fiber/v2"
 	m3o "go.m3o.com"
 	"go.m3o.com/email"
 	"log"
+	"reflect"
+	"fmt"
 	"net/http"
 	"os"
 	// "os/exec"
-	"github.com/Jeffail/gabs"
+	// "github.com/Jeffail/gabs"
 	"io/ioutil"
 	_ "reflect"
 )
@@ -94,31 +96,31 @@ func RenderAbout(c *fiber.Ctx) error {
 	response, err := http.Get(urlmcsv)
 	if err != nil {
 		log.Printf("No response from request %v", err)
-
 	}
 	defer response.Body.Close()
 	 
-	body, err := ioutil.ReadAll(resp.Body) // response body is []byte
+	body, err := ioutil.ReadAll(response.Body) // response body is []byte
 	if err != nil {
-		fmt.Println("No response from request")
-		fmt.Println(err)
+		log.Println("No response from request")
+		log.Println(err)
+ 	    // c.Redirect(http.StatusFound, location.RequestURI())
+	} 
 
-		c.Redirect(http.StatusFound, location.RequestURI())
-
-	}
-	var objParsed interface{}
+	var objParsed []interface{}
 	err = json.Unmarshal(body, &objParsed)
-	var result map[string]interface{}
-
-	err = json.Unmarshal(body, &result)
-	if err != nil {
-		fmt.Println("Unmarshal Error from request")
-		fmt.Println(err)
-	}
-
-	return c.Render("about-page", fiber.Map{
+	log.Println("objParsed response from objParsed")
+	log.Println("objParsed");log.Println("objParsed");log.Println("objParsed");
+	for i, num := range objParsed {
+        if i == 3 {  
+            log.Printf("index: %T", num )			
+			keys := reflect.ValueOf(num).MapKeys()
+			fmt.Println(keys) // [a b c]
+			 
+        }
+    }
+	return c.Render("about", fiber.Map{
 		"Title":    "About",
-		"Articles": "articles",
+		"Articles":objParsed,
 	}, "layouts/htm")
 
 }
